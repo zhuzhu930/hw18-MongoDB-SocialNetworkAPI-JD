@@ -8,7 +8,8 @@ const thoughtSchema = new Schema(
        thoughtText: {
            type: String,
            required: true, 
-           max_length: 280, 
+           minlength: 1,
+           maxlength: 280, 
        }, 
        createdAt: {
            type: Date,
@@ -26,12 +27,13 @@ const thoughtSchema = new Schema(
         toJSON: {
             getters: true,
             virtuals: true,
-        }
+        },
+        timestamps: { createdAt: true },
     }
 ); 
 
 //TODO: user a getter method to format the timestamp on query.
-//Insert my code here
+//Insert my code here, not so sure if the timestamps above is enough. 
 
 //TODO: create a virtual called reactionCount
 thoughtSchema.virtual('reactionCount').get(function() {
