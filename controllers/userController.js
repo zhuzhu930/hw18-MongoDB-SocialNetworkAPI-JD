@@ -9,6 +9,7 @@ const headCount = async () =>
 
 module.exports = {
   // Get all Users, GET requests
+  // Route: '/'
   getUsers(req, res) {
     User.find()
       .then(async (Users) => {
@@ -24,6 +25,7 @@ module.exports = {
       });
   },
   // Get a single User by its _id: , GET request
+  // Route: '/:UserId'
   getSingleUser(req, res) {
     User.findOne({ _id: req.params.UserId })
       .select('-__v')
@@ -43,35 +45,38 @@ module.exports = {
       });
   },
   // create a new User, POST requests
+  // Route: '/'
   createUser(req, res) {
     User.create(req.body)
       .then((User) => res.json(User))
       .catch((err) => res.status(500).json(err));
   },
 
-  //PUT request to update a user by its _id: 
+  //PUT request to update a user by its _id:
+  // Route: '/:UserId' 
   updateUser(req, res) {
-    User.put('/:id', (req, res) => {
+    User.put(() => {
       const { id: _id } = req.params;
       const { position } =  req.body; 
 
-      const newUser = {
+      const updateUser = {
         _id, 
         position
       }
 
       User.findByIdAndUpdate(
         _id, 
-        newUser, 
-        (err, updatedUser) => {
+        updateUser, 
+        //handle errors
+        (err, updateUser) => {
           if (err) {
             res.json({
-              newUser, 
+              updateUser, 
               success: false, 
               msg: 'Failed to update user'
             })
           } else {
-            res.json({newUser, success: true, msg: 'User updated'})
+            res.json({updateUser, success: true, msg: 'User updated'})
           }
         }
       )
@@ -79,7 +84,7 @@ module.exports = {
   },
 
   // Delete a User by its _id, DELETE requests
-  //? Not so sure whether it's working or not.
+  //Route: '/:UserId'
   deleteUser(req, res) {
     User.findOneAndRemove({ _id: req.params.UserId })
       .then((User) =>
@@ -108,7 +113,7 @@ module.exports = {
   },
 
   // Add a new friend to a User's friend list
-
+  // Route: '/:UserId/friends'
   addFriend(req, res) {
     console.log('You are adding a friend');
     console.log(req.body);
@@ -128,6 +133,7 @@ module.exports = {
   },
 
   // Remove a friend from a User's friends list
+  // Route: '/:UserId/friends/:friendId'
   removeFriend(req, res) {
     User.findOneAndUpdate(
       { _id: req.params.UserId },
