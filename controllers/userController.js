@@ -34,8 +34,8 @@ module.exports = {
           ? res.status(404).json({ message: 'No User with that ID' })
           : res.json({
               User,
-              //populate thought and friend data
-              thoughts,
+              //populate Thought and friend data
+              Thoughts,
               friends, 
             })
       )
@@ -90,7 +90,7 @@ module.exports = {
       .then((User) =>
         !User
           ? res.status(404).json({ message: 'No such user exists' })
-          //remove a user's associated thoughts when deleted: 
+          //remove a user's associated Thoughts when deleted: 
           : Thought.find(
               // { username: req.body },
               { $pull: {
@@ -99,12 +99,12 @@ module.exports = {
               { new: true }
             )
       )
-      .then((thought) =>
-        !thought
+      .then((Thought) =>
+        !Thought
           ? res.status(404).json({
-              message: 'User deleted, but no thoughts found',
+              message: 'User deleted, but no Thoughts found',
             })
-          : res.json({ message: 'User and thoughts successfully deleted' })
+          : res.json({ message: 'User and Thoughts successfully deleted' })
       )
       .catch((err) => {
         console.log(err);
