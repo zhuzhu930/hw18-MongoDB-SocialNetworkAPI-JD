@@ -8,7 +8,7 @@ const headCount = async () =>
     .then((numberOfUsers) => numberOfUsers);
 
 module.exports = {
-  // Get all Users, GET request
+  // Get all Users, GET requests
   getUsers(req, res) {
     User.find()
       .then(async (Users) => {
@@ -42,7 +42,7 @@ module.exports = {
         return res.status(500).json(err);
       });
   },
-  // create a new User, POST request
+  // create a new User, POST requests
   createUser(req, res) {
     User.create(req.body)
       .then((User) => res.json(User))
@@ -53,7 +53,7 @@ module.exports = {
   updateUser(req, res) {
     User.put('/:id', (req, res) => {
       const { id: _id } = req.params;
-      const {position} =  req.body; 
+      const { position } =  req.body; 
 
       const newUser = {
         _id, 
@@ -78,7 +78,7 @@ module.exports = {
     })
   },
 
-  // Delete a User by its _id, DELETE request
+  // Delete a User by its _id, DELETE requests
   //? Not so sure whether it's working or not.
   deleteUser(req, res) {
     User.findOneAndRemove({ _id: req.params.UserId })
@@ -106,43 +106,40 @@ module.exports = {
         res.status(500).json(err);
       });
   },
-// --------------------------------------
-// --------------------------------------
-// --------------------------------------
-// --------------------------------------
-  // TODOAdd a new friend to a User's friend list
 
-  addAssignment(req, res) {
-    console.log('You are adding an assignment');
+  // Add a new friend to a User's friend list
+
+  addFriend(req, res) {
+    console.log('You are adding a friend');
     console.log(req.body);
     User.findOneAndUpdate(
       { _id: req.params.UserId },
-      { $addToSet: { assignments: req.body } },
+      { $addToSet: { friends: req.body } },
       { runValidators: true, new: true }
     )
       .then((User) =>
         !User
           ? res
               .status(404)
-              .json({ message: 'No User found with that ID :(' })
+              .json({ message: 'No user found with that ID :(' })
           : res.json(User)
       )
       .catch((err) => res.status(500).json(err));
   },
 
-  
-  // Remove a friend from a User's friend list
-  removeAssignment(req, res) {
+  // Remove a friend from a User's friends list
+  removeFriend(req, res) {
     User.findOneAndUpdate(
       { _id: req.params.UserId },
-      { $pull: { assignment: { assignmentId: req.params.assignmentId } } },
+      //? is it correct to use friendId, or should I use ObjectId?
+      { $pull: { friends: { friendId: req.params.friendId } } },
       { runValidators: true, new: true }
     )
       .then((User) =>
         !User
           ? res
               .status(404)
-              .json({ message: 'No User found with that ID :(' })
+              .json({ message: 'No user found with that ID :(' })
           : res.json(User)
       )
       .catch((err) => res.status(500).json(err));
