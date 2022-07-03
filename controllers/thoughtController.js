@@ -12,7 +12,7 @@ module.exports = {
         return res.status(500).json(err);
       });
   },
-  // Delete a Thought, pull and remove a reaction by the reaction's reactionId value
+  // Delete a Thought
   // Route: 'api/thoughts/:thoughtId/reactions'
   deleteThought(req, res) {
     Thought.findOneAndRemove({ _id: req.params.thoughtId })

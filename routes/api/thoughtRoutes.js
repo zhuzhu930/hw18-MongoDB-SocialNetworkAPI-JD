@@ -1,20 +1,11 @@
 const router = require('express').Router();
+//Only 1 route with POST and DELETE requests
 const {
-  // getThoughts,
-  // getSingleThought,
   createThought,
-  // updateThought,
   deleteThought,
-} = require('../../controllers/ThoughtController.js');
+} = require('../../controllers/thoughtController.js');
 
-// /api/Thoughts
+// /api/thoughts/:thoughtId/reactions
 router.route('/:thoughtId/reactions').post(createThought).delete(deleteThought);
-
-// /api/Thoughts/:ThoughtId
-// router
-//   .route('/:ThoughtId')
-//   .get(getSingleThought)
-//   .put(updateThought)
-//   .delete(deleteThought);
 
 module.exports = router;
