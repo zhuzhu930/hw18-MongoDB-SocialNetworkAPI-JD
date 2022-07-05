@@ -43,7 +43,7 @@ connection.once('open', async () => {
 
   // Add thoughts to the collection and await the results
   await Thought.collection.insertOne({
-    users: [...users],
+    username: `${username}`,
   });
 
   // Log out the seed data to indicate what should appear in the database
