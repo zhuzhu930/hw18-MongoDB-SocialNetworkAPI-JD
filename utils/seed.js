@@ -19,7 +19,7 @@ connection.once('open', async () => {
   // Loop 20 times -- add users to the users array
   for (let i = 0; i < 20; i++) {
     // Get some random thought objects using a helper function that we imported from ./data
-    const thoughts = getRandomThoughts(20);
+    const thoughts = getRandomThoughts(2);
 
     const friends = getRandomFriends(3);
 
@@ -42,9 +42,7 @@ connection.once('open', async () => {
   await User.collection.insertMany(users);
 
   // Add thoughts to the collection and await the results
-  await Thought.collection.insertOne({
-    username: `${username}`,
-  });
+  // await Thought.collection.insertOne(username);
 
   // Log out the seed data to indicate what should appear in the database
   console.table(users);

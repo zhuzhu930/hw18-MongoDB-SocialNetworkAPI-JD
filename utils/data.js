@@ -117,7 +117,7 @@ const getRandomThoughts = (int) => {
 const getRandomFriends = (int) => {
   const friends = [];
   for (let i = 0; i < int; i++) {
-    friends.push({ getRandomArrItem(getRandomName)
+    friends.push({ getRandomName
     });
   }
   return friends;
