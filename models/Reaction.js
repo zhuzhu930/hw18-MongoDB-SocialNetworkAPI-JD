@@ -1,6 +1,5 @@
 const { Schema, model } = require('mongoose');
-// const userSchema = require('./User'); 
-// const thoughtSchema = require('./Thought')
+
 // require moment in to format date later.
 const moment = require('moment');
 
