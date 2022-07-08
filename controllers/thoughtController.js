@@ -1,41 +1,94 @@
 const { Thought, User } = require('../models');
 
 module.exports = {
-  //Create 2 requests: Post and Delete
-  // Route: 'api/thoughts/:thoughtId/reactions'
-  createThought(req, res) {
-    Thought.create(req.body)
-      //? should this be updating the entire Thought or just the reactions
-      .then((Thought) => res.json(Thought))
-      .catch((err) => {
-        console.log(err);
-        return res.status(500).json(err);
-      });
+  // Route: /api/thoughts, getAllThoughts, 
+  getAllThoughts(req, res) {
+    Thought.find({})
+    .populate({ path: 'reactions', select: '-__v'})
+    .select('-__v')
+    .then(thoughtData => res.json(thoughtData))
+    .catch(err => res.status(500).json(err));
   },
-  // Delete a Thought
-  // Route: 'api/thoughts/:thoughtId/reactions'
-  deleteThought(req, res) {
-    Thought.findOneAndRemove({ _id: req.params.thoughtId })
-      .then((Thought) =>
-        !Thought
-          ? res.status(404).json({ message: 'No Thought with that ID' })
-          : Thought.find(
-            { $pull: {
-              reactions: { _id: reactionId }}
-            },
-            { new: true }
-          )
-      )
-      //not so sure how to delete reactions
-      .then((Thought) => 
-      !Thought
-        ? res.json(404).json({
-          message: 'Thought delete, but no reactions found'
-        })
-        : res.json({
-          message: 'Thought and reactions successfully deleted'
-        })
-      )
-      .catch((err) => res.status(500).json(err));
-  }
+
+  // Route: /api/thoughts/:id, getThoughtById, 
+  getThoughtById({params}, res) {
+    Thought.findOne({ _id: params.id })
+    .populate({ path: 'reactions', select: '-__v'})
+    .select('-__v')
+    .then(thoughtData => {
+      !thoughtData
+      ? res.status(404).json({ message: "No thought with that Id!"})
+      : res.json(thoughtData)
+    })
+    .catch(err => res.json(err));
+  },
+
+  // Route: /api/thoughts/:userId, createThought, 
+  createThought({params, body }, res) {
+    Thought.create(body)
+      .then(({ _id }) => {
+        return User.findOneAndUpdate( { _id: params.userId },
+        {$push: {thoughts: _id }},
+        {new: true});
+      })
+      .then(thoughtData => {
+        !thoughtData
+        ? res.status(404).json({ message: "No thought with this Id!"})
+        : res.json(thoughtData)
+      })
+      .catch(err => res.json(err)); 
+  },
+
+  // Route: /api/thoughts/:id, updateThought,
+  updateThought({params, body}, res) {
+    Thought.findOneAndUpdate({_id: params.id}, body, {new: true, runValidators: true})
+    .populate({path: 'reactions', select: '-__v'})
+    .select('-___v')
+    .then(thoughtData => {
+        !thoughtData
+        ? res.status(404).json({message: 'No thoughts with this particular ID!'})
+        : res.json(thoughtData)
+    })
+    .catch(err => res.json(err));
+},
+
+  // Route: /api/thoughts/:id, deleteThought,
+  deleteThought({params}, res) {
+    Thought.findOneAndDelete({_id: params.id})
+    .then(thoughtData => {
+      !thoughtData
+      ? res.status(404).json({message: 'No thought with this particular ID!'})
+      : res.json(thoughtData)
+    })
+    .catch(err => res.status(400).json(err));
+},
+
+  // Route: /api/thoughts/:thoughtId/reactions, addReaction,
+  addReaction({params, body}, res) {
+    Thought.findOneAndUpdate(
+      {_id: params.thoughtId}, 
+      {$push: {reactions: body}}, 
+      {new: true, runValidators: true})
+    .populate({path: 'reactions', select: '-__v'})
+    .select('-__v')
+    .then(thoughtData => {
+      !thoughtData
+      ? res.status(404).json({message: 'No thought with this particular ID!'})
+      : res.json(thoughtData)
+    })
+    .catch(err => res.status(400).json(err))
+},
+  // Route: /api/thoughts/:thoughtId/reactions, deleteReaction
+  deleteReaction({params}, res) {
+    Thought.findOneAndUpdate(
+      {_id: params.thoughtId}, 
+      {$pull: {reactions: {reactionId: params.reactionId}}}, 
+      {new : true})
+    .then(thoughtData => {
+      !thoughtData
+      ? res.status(404).json({message: 'No thought with this particular ID!'})
+      : res.json(thoughtData)
+    })
+    .catch(err => res.status(400).json(err));
+}  
 }
