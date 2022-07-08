@@ -2,7 +2,7 @@ const { Schema, model } = require('mongoose');
 const userSchema = require('./User'); 
 const thoughtSchema = require('./Thought')
 
-// Schema to create Thought model
+// Schema to create reaction model
 const reactionSchema = new Schema(
     {
        reactionId: {
@@ -14,7 +14,7 @@ const reactionSchema = new Schema(
            required: true,
            maxlength: 280, 
        },
-       //How to link this username to user.
+       //?: How to link this username to user.
        username: {
         type: String,
         required: true,
@@ -35,5 +35,7 @@ const reactionSchema = new Schema(
 
 //TODO: user a getter method to format the timestamp on query.
 //Insert my code here, not so sure if the timestamps above is enough. 
+
+// const Reaction = model('reaction', reactionSchema);
 
 module.exports = reactionSchema; 
