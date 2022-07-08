@@ -1,6 +1,8 @@
 const { Schema, model } = require('mongoose');
-const userSchema = require('./User'); 
-const reactionSchema = require('./Reaction')
+// const userSchema = require('./User'); 
+const reactionSchema = require('./Reaction');
+//for formatting date, use moment.
+const moment = require('moment');
 
 // Schema to create Thought model
 const thoughtSchema = new Schema(
@@ -14,12 +16,14 @@ const thoughtSchema = new Schema(
        createdAt: {
            type: Date,
            default: Date.now,
+           // use Moment
+           get: (createdAtVal) => moment(createdAtVal).format('MMM DD, YYYY [at] hh:mm a')
        },
        //How to link this username to user.
        username: {
            type: String,
            required: true,
-           ref: 'user',
+        //    ref: 'user',
        },
        reactions: [reactionSchema],
     },
@@ -28,18 +32,16 @@ const thoughtSchema = new Schema(
             getters: true,
             virtuals: true,
         },
-        timestamps: { createdAt: true },
+        id: false,
+        // timestamps: { createdAt: true },
     }
 ); 
 
-//TODO: user a getter method to format the timestamp on query.
-//Insert my code here, not so sure if the timestamps above is enough. 
-
-//TODO: create a virtual called reactionCount
+//Create a virtual called reactionCount
 thoughtSchema.virtual('reactionCount').get(function() {
     return this.reactions.length; 
 }); 
 
-const Thought = model('thought', thoughtSchema); 
+const Thought = model('Thought', thoughtSchema); 
 
 module.exports = Thought; 

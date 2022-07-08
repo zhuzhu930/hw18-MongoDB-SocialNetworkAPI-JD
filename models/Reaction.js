@@ -1,6 +1,8 @@
 const { Schema, model } = require('mongoose');
-const userSchema = require('./User'); 
-const thoughtSchema = require('./Thought')
+// const userSchema = require('./User'); 
+// const thoughtSchema = require('./Thought')
+// require moment in to format date later.
+const moment = require('moment');
 
 // Schema to create reaction model
 const reactionSchema = new Schema(
@@ -14,22 +16,21 @@ const reactionSchema = new Schema(
            required: true,
            maxlength: 280, 
        },
-       //?: How to link this username to user.
        username: {
         type: String,
         required: true,
        },
-       //?: how to use a getter method to formate the timestamp on query
        createdAt: {
            type: Date,
            default: Date.now,
+           get: (createdAtVal) => moment(createdAtVal).format('MMM DD, YYYY [at] hh:mm a')
        },
     },
     {
         toJSON: {
             getters: true,
         },
-        timestamps: { createdAt: true },
+        // timestamps: { createdAt: true },
     },
 ); 
 
