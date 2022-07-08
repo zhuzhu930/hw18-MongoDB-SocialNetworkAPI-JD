@@ -1,4 +1,4 @@
-const { Thought, User, reactionSchema } = require('../models');
+const { Thought, User } = require('../models');
 
 module.exports = {
   //Create 2 requests: Post and Delete
