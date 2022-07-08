@@ -35,7 +35,7 @@ module.exports = {
           : res.json({
               User,
               //populate Thought and friend data
-              Thoughts,
+              thoughts,
               friends, 
             })
       )
