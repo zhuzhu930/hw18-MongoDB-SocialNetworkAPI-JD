@@ -14,7 +14,7 @@ const {
 router.route('/').get(getAllThoughts);
 
 // Route: /api/thoughts/:id, Use GET, PUT, DELETE requests
-router.route('/:id').get(getThoughtById).put(updateThought).delete(deleteThought); 
+router.route('/:userId').get(getThoughtById).put(updateThought).delete(deleteThought); 
 
 // Route: /api/thoughts/:userId, Use POST requests
 router.route('/:userId').post(createThought);

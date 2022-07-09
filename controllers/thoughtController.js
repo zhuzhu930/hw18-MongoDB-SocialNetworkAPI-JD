@@ -3,22 +3,22 @@ const { Thought, User } = require('../models');
 module.exports = {
   // Route: /api/thoughts, getAllThoughts, 
   getAllThoughts(req, res) {
-    Thought.find({})
+    Thought.find()
     .populate({ path: 'reactions', select: '-__v'})
     .select('-__v')
-    .then((thoughtsData) => res.json(thoughtsData))
-    .catch(err => res.status(500).json(err));
+    .then((thoughts) => res.json(thoughts))
+    .catch((err) => res.status(500).json(err));
   },
 
   // Route: /api/thoughts/:id, getThoughtById, 
   getThoughtById({params}, res) {
-    Thought.findOne({ _id: params.id })
-    .populate({ path: 'reactions', select: '-__v'})
+    Thought.findOne({ _id: params.userId })
+    // .populate({ path: 'reactions', select: '-__v'})
     .select('-__v')
-    .then((thoughtData) => {
-      !thoughtData
+    .then((thoughts) => {
+      !thoughts
       ? res.status(404).json({ message: "No thought with that Id!"})
-      : res.json(thoughtData)
+      : res.json(thoughts)
     })
     .catch(err => res.json(err));
   },
