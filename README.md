@@ -85,7 +85,12 @@ Please tell us the 3 simple steps for installing your app.
 ## Demo URL & Github Repo
 
 - Demo Video:
-  [Demo Link](https://drive.google.com/file/d/1PMw6HrfYfTd0uDhtfg4vlzsGgRSwDm-5/view)
+
+  - [Seed & Run](https://drive.google.com/file/d/1PMw6HrfYfTd0uDhtfg4vlzsGgRSwDm-5/view)
+  - [User Routes](https://drive.google.com/file/d/1PMw6HrfYfTd0uDhtfg4vlzsGgRSwDm-5/view)
+  - [Friends](https://drive.google.com/file/d/1PMw6HrfYfTd0uDhtfg4vlzsGgRSwDm-5/view)
+  - [Thoughts](https://drive.google.com/file/d/1PMw6HrfYfTd0uDhtfg4vlzsGgRSwDm-5/view)
+  - [Reactions](https://drive.google.com/file/d/1PMw6HrfYfTd0uDhtfg4vlzsGgRSwDm-5/view)
 
 - Github Repo:
   [Github](https://github.com/zhuzhu930/hw18-MongoDB-SocialNetworkAPI-JD)
