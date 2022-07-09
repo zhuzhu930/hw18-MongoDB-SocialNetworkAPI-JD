@@ -15,7 +15,7 @@ module.exports = {
       .populate({ path: 'thoughts', select: '-__v'})
       .populate({ path: 'friends', select: '-__v'})
       .select('-__v')
-      .then(usersData => res.json(usersData))
+      .then((usersData) => res.json(usersData))
       .catch((err) => {
         console.log(err);
         return res.status(500).json(err);
@@ -57,7 +57,7 @@ module.exports = {
       .then((userData) => {
         !userData
         ? res.status(404).json({ message: 'No user with this ID!'})
-        : res.json(userDAta);
+        : res.json(userData);
       })
       .catch(err => res.json(err))
   },
@@ -66,7 +66,7 @@ module.exports = {
   //Route: '/:userId'
   deleteUser({params}, res) {
     User.findOneAndDelete({ _id: params.userId})
-    .then(userData => {
+    .then((userData) => {
       !userData
       ? res.status(404).json({ message: 'No user with this Id!'})
       : res.json(userData);
@@ -104,13 +104,13 @@ module.exports = {
       { new: true })
       .populate({ path: 'friends', select: '-__v'})
       .select('-__v')
-      .then((userData) =>
+      .then((userData) => {
         !userData
           ? res
               .status(404)
               .json({ message: 'No user found with that ID' })
           : res.json(userData)
-      )
+      })
       .catch(err => res.status(500).json(err));
   },
 };

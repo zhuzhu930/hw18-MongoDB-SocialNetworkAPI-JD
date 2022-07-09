@@ -6,7 +6,7 @@ module.exports = {
     Thought.find({})
     .populate({ path: 'reactions', select: '-__v'})
     .select('-__v')
-    .then(thoughtData => res.json(thoughtData))
+    .then((thoughtsData) => res.json(thoughtsData))
     .catch(err => res.status(500).json(err));
   },
 
@@ -15,7 +15,7 @@ module.exports = {
     Thought.findOne({ _id: params.id })
     .populate({ path: 'reactions', select: '-__v'})
     .select('-__v')
-    .then(thoughtData => {
+    .then((thoughtData) => {
       !thoughtData
       ? res.status(404).json({ message: "No thought with that Id!"})
       : res.json(thoughtData)
@@ -31,7 +31,7 @@ module.exports = {
         {$push: {thoughts: _id }},
         {new: true});
       })
-      .then(thoughtData => {
+      .then((thoughtData) => {
         !thoughtData
         ? res.status(404).json({ message: "No thought with this Id!"})
         : res.json(thoughtData)
@@ -44,7 +44,7 @@ module.exports = {
     Thought.findOneAndUpdate({_id: params.id}, body, {new: true, runValidators: true})
     .populate({path: 'reactions', select: '-__v'})
     .select('-___v')
-    .then(thoughtData => {
+    .then((thoughtData) => {
         !thoughtData
         ? res.status(404).json({message: 'No thoughts with this particular ID!'})
         : res.json(thoughtData)
@@ -55,7 +55,7 @@ module.exports = {
   // Route: /api/thoughts/:id, deleteThought,
   deleteThought({params}, res) {
     Thought.findOneAndDelete({_id: params.id})
-    .then(thoughtData => {
+    .then((thoughtData) => {
       !thoughtData
       ? res.status(404).json({message: 'No thought with this particular ID!'})
       : res.json(thoughtData)
@@ -71,7 +71,7 @@ module.exports = {
       {new: true, runValidators: true})
     .populate({path: 'reactions', select: '-__v'})
     .select('-__v')
-    .then(thoughtData => {
+    .then((thoughtData) => {
       !thoughtData
       ? res.status(404).json({message: 'No thought with this particular ID!'})
       : res.json(thoughtData)
@@ -84,7 +84,7 @@ module.exports = {
       {_id: params.thoughtId}, 
       {$pull: {reactions: {reactionId: params.reactionId}}}, 
       {new : true})
-    .then(thoughtData => {
+    .then((thoughtData) => {
       !thoughtData
       ? res.status(404).json({message: 'No thought with this particular ID!'})
       : res.json(thoughtData)
