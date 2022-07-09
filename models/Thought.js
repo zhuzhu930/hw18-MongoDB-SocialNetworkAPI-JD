@@ -37,10 +37,13 @@ const thoughtSchema = new Schema(
 ); 
 
 //Create a virtual called reactionCount
-thoughtSchema.virtual('reactionCount').get(function() {
+thoughtSchema
+    .virtual('reactionCount')
+    //Getter
+    .get(function() {
     return this.reactions.length; 
-}); 
+    }); 
 
-const Thought = model('Thought', thoughtSchema); 
+const Thought = model('thought', thoughtSchema); 
 
 module.exports = Thought; 

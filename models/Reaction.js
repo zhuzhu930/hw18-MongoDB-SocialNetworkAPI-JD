@@ -1,4 +1,5 @@
-const { Schema, model } = require('mongoose');
+const { Schema } = require('mongoose');
+const ObjectId = require('mongodb').ObjectId;
 
 // require moment in to format date later.
 const moment = require('moment');
@@ -7,8 +8,9 @@ const moment = require('moment');
 const reactionSchema = new Schema(
     {
        reactionId: {
-           type: Schema.Types.ObjectId,
-           default: () => new Types.ObjectId(), 
+           type: ObjectId,
+           default: () => new ObjectId(), 
+           maxlength: 50,
        }, 
        reactionBody: {
            type: String,
@@ -29,13 +31,7 @@ const reactionSchema = new Schema(
         toJSON: {
             getters: true,
         },
-        // timestamps: { createdAt: true },
     },
 ); 
-
-//TODO: user a getter method to format the timestamp on query.
-//Insert my code here, not so sure if the timestamps above is enough. 
-
-// const Reaction = model('reaction', reactionSchema);
 
 module.exports = reactionSchema; 
