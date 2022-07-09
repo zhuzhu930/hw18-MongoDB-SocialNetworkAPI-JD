@@ -2,10 +2,10 @@ const { ObjectId } = require('mongoose').Types;
 const { User, Thought } = require('../models');
 
 // Aggregate function to get the number of users overall
-const headCount = async () =>
-  User.aggregate()
-    .count('userCount')
-    .then((numberOfUsers) => numberOfUsers);
+// const headCount = async () =>
+//   User.aggregate()
+//     .count('userCount')
+//     .then((numberOfUsers) => numberOfUsers);
 
 module.exports = {
   // Get all Users, GET requests
@@ -15,13 +15,7 @@ module.exports = {
       .populate({ path: 'thoughts', select: '-__v'})
       .populate({ path: 'friends', select: '-__v'})
       .select('-__v')
-      .then(async (Users) => {
-        const UserObj = {
-          Users,
-          headCount: await headCount(),
-        };
-        return res.json(UserObj);
-      })
+      .then(usersData => res.json(usersData))
       .catch((err) => {
         console.log(err);
         return res.status(500).json(err);
@@ -34,11 +28,11 @@ module.exports = {
       .populate({ path: 'thoughts', select:'-__v'})
       .populate({ path: 'friends', select: '-__v'})
       .select('-__v')
-      .then(async (userData) =>
+      .then((userData) => {
         !userData
           ? res.status(404).json({ message: 'No User with that ID' })
           : res.json(userData)
-      )
+      })
       .catch((err) => {
         console.log(err);
         return res.status(500).json(err);

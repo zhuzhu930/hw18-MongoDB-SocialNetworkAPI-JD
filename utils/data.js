@@ -136,7 +136,7 @@ const thoughtDescriptions = [
   'The skeleton is not in us. We are the brain. So we\’re in a skeleton.',
   'Each person has a different image of us and tailors a version of us that we do not know.',
   'Children with an imaginary friend are creative, while adults with an imaginary friend are schizophrenics.',
-  'Because you’re blinking, you\’ve never seen the whole movie in your life.',
+  'Because you\’re blinking, you\’ve never seen the whole movie in your life.',
   'Do animals think we are aliens because we don\’t look like them?',
   'If we were called differently, would we behave like a different person?',
   'It is more valuable to have a few true friends than to be in the company of many fake people.',
@@ -163,9 +163,10 @@ const getRandomThoughts = (int) => {
 };
 
 const getRandomFriends = (int) => {
-  const friends = [];
+  let friends = [];
   for (let i = 0; i < int; i++) {
-    friends.push({ getRandomName
+    friends.push({ 
+      friends: getRandomName(),
     });
   }
   return friends;
