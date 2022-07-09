@@ -13,8 +13,8 @@ const {
 // Route: /api/thoughts GET all thoughts
 router.route('/').get(getAllThoughts);
 
-// Route: /api/thoughts/:id, Use GET, PUT, DELETE requests
-router.route('/:userId').get(getThoughtById).put(updateThought).delete(deleteThought); 
+// Route: /api/thoughts/:thoughtId, Use GET, PUT, DELETE requests
+router.route('/:thoughtId').get(getThoughtById).put(updateThought).delete(deleteThought); 
 
 // Route: /api/thoughts/:userId, Use POST requests
 router.route('/:userId').post(createThought);
