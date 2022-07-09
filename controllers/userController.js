@@ -56,7 +56,7 @@ module.exports = {
   // Route: '/:userId' 
   updateUser({params, body}, res) {
     User.findOneAndUpdate(
-      { _id: params.id}, 
+      { _id: params.userId}, 
       body, 
       { new: true, runValidators: true }
       )
