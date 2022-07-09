@@ -1,0 +1,20 @@
+// Friends folder
+// POST: Add a friend : http://localhost:3001/api/users/:userId/friends/:friendId
+// DEL: Remove a friend : http://localhost:3001/api/users/:userId/friends/:friendId
+
+// Users folder
+// GET: Find all users : http://localhost:3001/api/users
+// GET: Find user by id : http://localhost:3001/api/users/:userId
+// PUT: Update user : http://localhost:3001/api/users/:userId
+// DEL: Delete user : http://localhost:3001/api/users/:userId
+// POST: Create user : http://localhost:3001/api/users
+// POST: Create second user : http://localhost:3001/api/users
+// POST: Create third user : http://localhost:3001/api/users
+
+// Reactions folder
+// POST Create reaction : http://localhost:3001/api/thoughts/:thoughtId/reactions
+// DEL Remove reaction : http://localhost:3001/api/thoughts/:thoughtId/reactions/:reactionId
+
+// Thoughts folder
+// Post Create thought : http://localhost:3001/api/thoughts/:userId
+// Get all thoughts : http://localhost:3001/api/thoughts
