@@ -10,20 +10,7 @@ module.exports = {
     .catch((err) => res.status(500).json(err));
   },
 
-  // Route: /api/thoughts/:thoughtId, getThoughtById, 
-  getThoughtById(req, res) {
-    Thought.findOne({ _id: req.params.thoughtId })
-    // .populate({ path: 'reactions', select: '-__v'})
-    .select('-__v')
-    .then((thought) => {
-      !thought
-      ? res.status(404).json({ message: "No thought with that Id!"})
-      : res.json(thought)
-    })
-    .catch(err => res.status(500).json(err));
-  },
-
-  // Route: /api/thoughts/:userId, createThought, 
+  // Route: /api/thoughts/, createThought, 
   createThought(req, res) {
     Thought.create(req.body)
       .then(async (thought) => {
@@ -39,6 +26,19 @@ module.exports = {
         console.log(err);
         return res.status(500).json(err);
       });
+  },
+
+  // Route: /api/thoughts/:thoughtId, getThoughtById, 
+  getThoughtById(req, res) {
+    Thought.findOne({ _id: req.params.thoughtId })
+    // .populate({ path: 'reactions', select: '-__v'})
+    .select('-__v')
+    .then((thought) => {
+      !thought
+      ? res.status(404).json({ message: "No thought with that Id!"})
+      : res.json(thought)
+    })
+    .catch(err => res.status(500).json(err));
   },
 
   // Route: /api/thoughts/:thoughtId, updateThought,
