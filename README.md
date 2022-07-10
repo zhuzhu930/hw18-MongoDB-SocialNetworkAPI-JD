@@ -88,9 +88,9 @@ Please tell us the 3 simple steps for installing your app.
 
   - [Seed & Run](https://drive.google.com/file/d/1bpOUiHz0cX--49IF1gmHofV8OR00jCik/view)
   - [User Routes](https://drive.google.com/file/d/169IWk-H3BQryGr7bKrENZcX5JsCy1yiA/view)
-  - [Friends](https://drive.google.com/file/d/1PMw6HrfYfTd0uDhtfg4vlzsGgRSwDm-5/view)
-  - [Thoughts](https://drive.google.com/file/d/1PMw6HrfYfTd0uDhtfg4vlzsGgRSwDm-5/view)
-  - [Reactions](https://drive.google.com/file/d/1PMw6HrfYfTd0uDhtfg4vlzsGgRSwDm-5/view)
+  - [Friends](#)
+  - [Thoughts](#)
+  - [Reactions](#)
 
 - Github Repo:
   [Github](https://github.com/zhuzhu930/hw18-MongoDB-SocialNetworkAPI-JD)
