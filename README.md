@@ -37,7 +37,7 @@ Please tell us the 3 simple steps for installing your app.
     - ![Start](assets/images/start.png)
 
   - Insomnia side:
-    ![VS code](assets/images/queryscreen.png)
+    ![Insomnia](assets/images/Insomnia.png)
 
 ## License
 
