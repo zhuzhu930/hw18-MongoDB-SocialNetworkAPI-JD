@@ -1,27 +1,17 @@
 const { ObjectId } = require('mongoose').Types;
-const { User, Thought } = require('../models');
+const { User } = require('../models');
 
-// Aggregate function to get the number of users overall
-// const headCount = async () =>
-//   User.aggregate()
-//     .count('userCount')
-//     .then((numberOfUsers) => numberOfUsers);
-
-module.exports = {
+const usersController = {
   // Get all Users, GET requests
   // Route: '/'
   getUsers(req, res) {
-    User.find()
+    User.find({})
       .populate({ path: 'thoughts', select: '-__v'})
-      .populate({ path: 'friends', select: '-__v'})
+      // .populate({ path: 'friends', select: '-__v'})
       .select('-__v')
       // .then((usersData) => res.json(usersData))
-      .then((users) => {
-        const userObj = {
-          users,
-        };
-        return res.json(userObj);
-      })
+      .sort({_id: -1})
+      .then((usersData) => res.json(usersData))
       .catch((err) => {
         console.log(err);
         return res.status(500).json(err);
@@ -29,10 +19,10 @@ module.exports = {
   },
   // Get a single User by its _id: , GET request
   // Route: '/:userId'
-  getSingleUser(req, res) {
-    User.findOne({ _id: req.params.userId })
+  getSingleUser({params}, res) {
+    User.findOne({ _id: params.id })
       .populate({ path: 'thoughts', select:'-__v'})
-      .populate({ path: 'friends', select: '-__v'})
+      // .populate({ path: 'friends', select: '-__v'})
       .select('-__v')
       .then((userData) => {
         !userData
@@ -46,8 +36,8 @@ module.exports = {
   },
   // create a new User, POST requests
   // Route: '/'
-  createUser(req, res) {
-    User.create(req.body)
+  createUser({body}, res) {
+    User.create(body)
       .then(userData => res.json(userData))
       .catch(err => res.status(500).json(err));
   },
@@ -56,7 +46,8 @@ module.exports = {
   // Route: '/:userId' 
   updateUser({params, body}, res) {
     User.findOneAndUpdate(
-      { _id: params.userId}, 
+      //changed userId to id
+      { _id: params.id}, 
       body, 
       { new: true, runValidators: true }
       )
@@ -71,7 +62,7 @@ module.exports = {
   // Delete a User by its _id, DELETE requests
   //Route: '/:userId'
   deleteUser({params}, res) {
-    User.findOneAndDelete({ _id: params.userId})
+    User.findOneAndDelete({ _id: params.id})
     .then((userData) => {
       !userData
       ? res.status(404).json({ message: 'No user with this Id!'})
@@ -86,7 +77,7 @@ module.exports = {
     // console.log('You are adding a friend');
     // console.log(req.body);
     User.findOneAndUpdate(
-      { _id: params.userId },
+      { _id: params.id },
       { $push: { friends: params.friendId } },
       { new: true })
       .populate({ path: 'friends', select: ('-__v')})
@@ -105,7 +96,7 @@ module.exports = {
   // Route: '/:userId/friends/:friendId'
   removeFriend({params}, res) {
     User.findOneAndUpdate(
-      { _id: params.userId },
+      { _id: params.id },
       { $pull: { friends: params.friendId }},
       { new: true })
       .populate({ path: 'friends', select: '-__v'})
@@ -120,3 +111,5 @@ module.exports = {
       .catch(err => res.status(500).json(err));
   },
 };
+
+module.exports = usersController; 

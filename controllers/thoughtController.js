@@ -1,9 +1,9 @@
 const { Thought, User } = require('../models');
 
-module.exports = {
+const thoughtsController = {
   // Route: /api/thoughts, getAllThoughts, 
   getAllThoughts(req, res) {
-    Thought.find()
+    Thought.find({})
     .populate({ path: 'reactions', select: '-__v'})
     .select('-__v')
     .then((thoughts) => res.json(thoughts))
@@ -11,16 +11,19 @@ module.exports = {
   },
 
   // Route: /api/thoughts/, createThought, 
-  createThought(req, res) {
-    Thought.create(req.body)
-      .then(async (thought) => {
-        const user = await User.findOneAndUpdate(
-          { username: req.body.username },
-          { $push: { thoughts: thought } },
+  createThought({body}, res) {
+    Thought.create(body)
+      .then((_id) => {
+        return User.findOneAndUpdate(
+          { _id: body.userId },
+          { $push: { thoughts: _id } },
           { runValidators: true, new: true }
-        );
-        user.save();
-        res.json(thought);
+        )
+        .then(
+          !thoughtData
+            ? res.status(404).json({ message: "No user created."})
+            : res.json(thoughtData)
+        )
       })
       .catch((err) => {
         console.log(err);
@@ -29,14 +32,15 @@ module.exports = {
   },
 
   // Route: /api/thoughts/:thoughtId, getThoughtById, 
-  getThoughtById(req, res) {
-    Thought.findOne({ _id: req.params.thoughtId })
+  getThoughtById({params}, res) {
+    //changed thoughtId into id
+    Thought.findOne({ _id: params.id })
     // .populate({ path: 'reactions', select: '-__v'})
     .select('-__v')
-    .then((thought) => {
-      !thought
+    .then((thoughtData) => {
+      !thoughtData
       ? res.status(404).json({ message: "No thought with that Id!"})
-      : res.json(thought)
+      : res.json(thoughtData)
     })
     .catch(err => res.status(500).json(err));
   },
@@ -44,26 +48,26 @@ module.exports = {
   // Route: /api/thoughts/:thoughtId, updateThought,
   updateThought({params, body}, res) {
     Thought.findOneAndUpdate(
-      {_id: params.thoughtId}, 
+      {_id: params.id}, 
       body, 
       {new: true, runValidators: true})
     // .populate({path: 'reactions', select: '-__v'})
     .select('-___v')
-    .then((thought) => {
-        !thought
+    .then((thoughtData) => {
+        !thoughtData
         ? res.status(404).json({message: 'No thought with this particular ID!'})
-        : res.json(thought)
+        : res.json(thoughtData)
     })
     .catch((err) => res.json(err));
 },
 
   // Route: /api/thoughts/:thoughtId, deleteThought,
-  deleteThought(req, res) {
-    Thought.findOneAndDelete({_id: req.params.thoughtId})
-    .then((thought) => {
-      !thought
+  deleteThought({params}, res) {
+    Thought.findOneAndDelete({_id: params.id})
+    .then((thoughtData) => {
+      !thoughtData
       ? res.status(404).json({message: 'No thought with this particular ID!'})
-      : res.json(thought)
+      : res.json(thoughtData)
     })
     .catch((err) => res.status(400).json(err));
 },
@@ -72,13 +76,13 @@ module.exports = {
   addReaction({params, body}, res) {
     Thought.findOneAndUpdate(
       {_id: params.thoughtId}, 
-      {$push: {reactions: body}}, 
+      {$addToSet: {reactions: body}}, 
       {new: true, runValidators: true})
     // .populate({path: 'reactions', select: '-__v'})
     // .select('-__v')
-    .then((thought) => {
-      thought.save();
-      res.json(thought);
+    .then((thoughtData) => {
+      thoughtData.save();
+      res.json(thoughtData);
       // !thought
       // ? res.status(404).json({message: 'No thought with this particular ID!'})
       // : res.json(thought)
@@ -86,10 +90,10 @@ module.exports = {
     .catch((err) => res.json(err))
 },
   // Route: /api/thoughts/:thoughtId/reactions, deleteReaction
-  deleteReaction(req, res) {
+  deleteReaction({params}, res) {
     Thought.findOneAndUpdate(
-      {_id: req.params.thoughtId}, 
-      {$pull: {reactions: {reactionId: req.params.reactionId}}}, 
+      {_id: params.id}, 
+      {$pull: {reactions: {reactionId: params.reactionId}}}, 
       {new : true}
     )
     .then((thought) => {
@@ -99,4 +103,6 @@ module.exports = {
     })
     .catch((err) => res.status(400).json(err));
 }  
-}
+};
+
+module.exports = thoughtsController; 
