@@ -48,8 +48,8 @@ module.exports = {
   // Route: '/'
   createUser(req, res) {
     User.create(req.body)
-      .then((userData) => res.json(userData))
-      .catch((err) => res.status(500).json(err));
+      .then(userData => res.json(userData))
+      .catch(err => res.status(500).json(err));
   },
 
   //PUT request to update a user by its _id:
