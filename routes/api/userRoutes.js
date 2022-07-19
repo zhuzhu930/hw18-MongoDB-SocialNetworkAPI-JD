@@ -11,14 +11,24 @@ const {
 
 // /api/users
 // Get all users or post new users:
-router.route('/').get(getUsers).post(createUser);
+router
+  .route('/')
+  .get(getUsers)
+  .post(createUser);
 
-// /api/users/:userId
+// /api/users/:id
 // get, update or delete single user: 
-router.route('/:userId').get(getSingleUser).put(updateUser).delete(deleteUser);
+router
+  .route('/:id')
+  .get(getSingleUser)
+  .put(updateUser)
+  .delete(deleteUser);
 
-// /api/Users/:userId/friends/:friendId
+// /api/Users/:id/friends/:friendId
 // Post or Delete a friend under User:
-router.route('/:userId/friends/:friendId').post(addFriend).delete(removeFriend);
+router
+  .route('/:id/friends/:friendId')
+  .post(addFriend)
+  .delete(removeFriend);
 
 module.exports = router;
