@@ -1,6 +1,6 @@
 const { Thought, User } = require('../models');
 
-const thoughtsController = {
+const thoughtController = {
   // Route: /api/thoughts, getAllThoughts, 
   getAllThoughts(req, res) {
     Thought.find({})
@@ -34,7 +34,7 @@ const thoughtsController = {
       });
   },
 
-  // Route: /api/thoughts/:thoughtId, getThoughtById, 
+  // Route: /api/thoughts/:id, getThoughtById, 
   getThoughtById({ params }, res) {
     //changed thoughtId into id
     Thought.findOne({ _id: params.id })
@@ -48,7 +48,7 @@ const thoughtsController = {
     .catch((err) => res.status(500).json(err));
   },
 
-  // Route: /api/thoughts/:thoughtId, updateThought,
+  // Route: /api/thoughts/:id, updateThought,
   updateThought({ params, body }, res) {
     Thought.findOneAndUpdate(
       { _id: params.id }, 
@@ -64,9 +64,9 @@ const thoughtsController = {
     .catch((err) => res.json(err));
 },
 
-  // Route: /api/thoughts/:thoughtId, deleteThought,
+  // Route: /api/thoughts/:id, deleteThought,
   deleteThought({ params }, res) {
-    Thought.findOneAndDelete({_id: params.id})
+    Thought.findOneAndDelete({ _id: params.id })
     .then((thoughtData) => {
       !thoughtData
         ? res.status(404).json({message: 'No thought with this particular ID!'})
@@ -75,10 +75,10 @@ const thoughtsController = {
     .catch((err) => res.status(400).json(err));
 },
 
-  // Route: /api/thoughts/:thoughtId/reactions, addReaction,
+  // Route: /api/thoughts/:id/reactions, addReaction,
   addReaction({ params, body }, res) {
     Thought.findOneAndUpdate(
-      { _id: params.thoughtId }, 
+      { _id: params.id }, 
       { $addToSet: {reactions: body} }, 
       { new: true })
     .then((thoughtData) => {
@@ -88,7 +88,7 @@ const thoughtsController = {
     })
     .catch((err) => res.json(err))
 },
-  // Route: /api/thoughts/:thoughtId/reactions, deleteReaction
+  // Route: /api/thoughts/:id/reactions/:reactionId, deleteReaction
   deleteReaction({ params }, res) {
     Thought.findOneAndUpdate(
       { _id: params.id }, 
@@ -104,4 +104,4 @@ const thoughtsController = {
 }  
 };
 
-module.exports = thoughtsController; 
+module.exports = thoughtController; 
