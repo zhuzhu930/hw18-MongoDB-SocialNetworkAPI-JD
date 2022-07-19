@@ -1,16 +1,18 @@
 const { ObjectId } = require('mongoose').Types;
 const { User } = require('../models');
 
-const usersController = {
+const userController = {
   // Get all Users, GET requests
   // Route: '/'
   getUsers(req, res) {
     User.find({})
-      .populate({ path: 'thoughts', select: '-__v'})
-      // .populate({ path: 'friends', select: '-__v'})
+      .populate({ 
+        path: 'thoughts', 
+        select: '-__v'
+      })
       .select('-__v')
       // .then((usersData) => res.json(usersData))
-      .sort({_id: -1})
+      .sort({ _id: -1 })
       .then((usersData) => res.json(usersData))
       .catch((err) => {
         console.log(err);
@@ -18,10 +20,13 @@ const usersController = {
       });
   },
   // Get a single User by its _id: , GET request
-  // Route: '/:userId'
-  getSingleUser({params}, res) {
+  // Route: '/api/users/:userId'
+  getSingleUser({ params }, res) {
     User.findOne({ _id: params.id })
-      .populate({ path: 'thoughts', select:'-__v'})
+      .populate({ 
+        path: 'thoughts', 
+        select:'-__v'
+      })
       // .populate({ path: 'friends', select: '-__v'})
       .select('-__v')
       .then((userData) => {
@@ -36,52 +41,50 @@ const usersController = {
   },
   // create a new User, POST requests
   // Route: '/'
-  createUser({body}, res) {
+  createUser({ body }, res) {
     User.create(body)
-      .then(userData => res.json(userData))
+      .then((userData) => res.json(userData))
       .catch(err => res.status(500).json(err));
   },
 
   //PUT request to update a user by its _id:
   // Route: '/:userId' 
-  updateUser({params, body}, res) {
+  updateUser({ params, body }, res) {
     User.findOneAndUpdate(
       //changed userId to id
-      { _id: params.id}, 
+      { _id: params.id }, 
       body, 
       { new: true, runValidators: true }
       )
       .then((userData) => {
         !userData
-        ? res.status(404).json({ message: 'No user with this ID!'})
-        : res.json(userData);
+          ? res.status(404).json({ message: 'No user with this ID!'})
+          : res.json(userData);
       })
-      .catch(err => res.json(err))
+      .catch(err => res.status(500).json(err))
   },
 
   // Delete a User by its _id, DELETE requests
   //Route: '/:userId'
-  deleteUser({params}, res) {
-    User.findOneAndDelete({ _id: params.id})
+  deleteUser({ params }, res) {
+    User.findOneAndDelete({ _id: params.id })
     .then((userData) => {
       !userData
-      ? res.status(404).json({ message: 'No user with this Id!'})
-      : res.json(userData);
+        ? res.status(404).json({ message: 'No user with this Id!'})
+        : res.json(userData);
     })
-    .catch(err => res.status(404).json(err));
+    .catch(err => res.status(500).json(err));
   },
 
   // Add a new friend to a User's friend list
   // Route: '/:userId/friends'
-  addFriend({params}, res) {
-    // console.log('You are adding a friend');
-    // console.log(req.body);
+  addFriend({ params }, res) {
     User.findOneAndUpdate(
       { _id: params.id },
-      { $push: { friends: params.friendId } },
+      { $addToSet: { friends: params.friendId } },
       { new: true })
-      .populate({ path: 'friends', select: ('-__v')})
-      .select('-__v')
+      // .populate({ path: 'friends', select: ('-__v')})
+      // .select('-__v')
       .then((userData) =>
         !userData
           ? res
@@ -94,13 +97,13 @@ const usersController = {
 
   // Remove a friend from a User's friends list
   // Route: '/:userId/friends/:friendId'
-  removeFriend({params}, res) {
+  removeFriend({ params }, res) {
     User.findOneAndUpdate(
       { _id: params.id },
       { $pull: { friends: params.friendId }},
       { new: true })
-      .populate({ path: 'friends', select: '-__v'})
-      .select('-__v')
+      // .populate({ path: 'friends', select: '-__v'})
+      // .select('-__v')
       .then((userData) => {
         !userData
           ? res
@@ -112,4 +115,4 @@ const usersController = {
   },
 };
 
-module.exports = usersController; 
+module.exports = userController; 
