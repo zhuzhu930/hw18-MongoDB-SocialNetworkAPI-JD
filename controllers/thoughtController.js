@@ -1,4 +1,5 @@
-const { Thought, User } = require('../models');
+const { Thought, Reaction } = require('../models/Thought');
+const User = require('../models/User');
 
 const thoughtController = {
   // Route: /api/thoughts, getAllThoughts, 
