@@ -1,5 +1,5 @@
-const { Schema } = require('mongoose');
-const ObjectId = require('mongodb').ObjectId;
+const { Schema, Types } = require('mongoose');
+// const ObjectId = require('mongodb').ObjectId;
 
 // require moment in to format date later.
 const moment = require('moment');
@@ -8,8 +8,8 @@ const moment = require('moment');
 const reactionSchema = new Schema(
     {
        reactionId: {
-           type: ObjectId,
-           default: () => new ObjectId(), 
+           type: Schema.Types.ObjectId,
+           default: () => new Types.ObjectId(), 
            maxlength: 50,
        }, 
        reactionBody: {
@@ -31,6 +31,7 @@ const reactionSchema = new Schema(
         toJSON: {
             getters: true,
         },
+        id: false
     },
 ); 
 
